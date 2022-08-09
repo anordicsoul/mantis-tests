@@ -17,24 +17,28 @@ namespace mantis_tests
         protected string baseURL;
         protected string mantis_vers;
 
-        public RegistrationHelper Registration { get; private set; }
+        public RegistrationHelper Registration { get; set; }
         public FtpHelper Ftp { get; set; }
         public NavigationHelper Navigation { get; set; }
         public AuthHelper authHelper { get; set; }
         public ProjectManagementHelper projectManagementHelper { get; set; }
+        public AdminHelper Admin { get; set; }
+        public APIHelper API { get; set; }
 
         private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
         private ApplicationManager()
         {
             driver = new FirefoxDriver();
-            baseURL = "http://localhost/mantisbt-2.25.4/login_page.php";
+            baseURL = "http://localhost/mantisbt-2.25.4";
             mantis_vers = "2.25.4";
             Registration = new RegistrationHelper(this);
             Ftp = new FtpHelper(this);
             Navigation = new NavigationHelper(this, baseURL, mantis_vers);
             authHelper = new AuthHelper(this);
             projectManagementHelper = new ProjectManagementHelper(this);
+            Admin = new AdminHelper(this, baseURL);
+            API = new APIHelper(this);
         }
 
         ~ApplicationManager()
@@ -54,7 +58,7 @@ namespace mantis_tests
             if (! app.IsValueCreated)
             {
                 ApplicationManager newInstance = new ApplicationManager();
-                newInstance.driver.Url = "http://localhost/mantisbt-2.25.4/login_page.php";
+                newInstance.driver.Url = newInstance.baseURL + "/login_page.php";
                 app.Value = newInstance;
             }
             return app.Value;

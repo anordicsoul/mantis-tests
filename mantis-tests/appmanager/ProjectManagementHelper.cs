@@ -22,6 +22,8 @@ namespace mantis_tests
         }
         public void Remove(int index)
         {
+            manager.Navigation.GoToManageOverviewPage();
+            manager.Navigation.GoToProjectControlPage();
             InitProjectModification(index);
             SubmitRemoveProjectButton();
             AcceptRemoveProject();

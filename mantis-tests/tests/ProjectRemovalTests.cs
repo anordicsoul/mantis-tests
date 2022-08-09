@@ -9,25 +9,30 @@ namespace mantis_tests
 {
     [TestFixture]
 
-    public class ProjectRemovalTests : ProjectManagementTestBase
+    public class ProjectRemovalTests : AuthTestBase
     {
         [Test]
         public void RemoveProjectTest()
         {
-            if (app.projectManagementHelper.GetProjectList().Count == 0)
+            AccountData account = new AccountData()
+            {
+                Name = "administrator",
+                Password = "root"
+            };
+            if (app.API.GetAllProjects(account).Count == 0)
             {
                 ProjectData project = new ProjectData()
                 {
                     Name = GenerateRandomString(15),
                     Description = GenerateRandomString(100),
                 };
-                app.projectManagementHelper.Create(project);
+                app.API.CreateNewProject(account, project);
             }
-            List<ProjectData> oldList = app.projectManagementHelper.GetProjectList();
+            List<ProjectData> oldList = app.API.GetAllProjects(account);
 
             app.projectManagementHelper.Remove(0);
 
-            List<ProjectData> newList = app.projectManagementHelper.GetProjectList();
+            List<ProjectData> newList = app.API.GetAllProjects(account);
             ProjectData toBeRemoved = oldList[0];
             oldList.RemoveAt(0);
             oldList.Sort();
