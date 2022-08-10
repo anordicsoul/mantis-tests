@@ -40,7 +40,7 @@ namespace mantis_tests
 
             foreach (ProjectData project in newList)
             {
-                Assert.AreNotEqual(project.Id, toBeRemoved.Id);
+                Assert.AreNotEqual(project.Name, toBeRemoved.Name);
             }
 
             Assert.AreEqual(oldList.Count, newList.Count);
