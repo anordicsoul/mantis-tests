@@ -14,37 +14,35 @@ namespace mantis_tests
         [Test]
         public void RemoveProjectTest()
         {
-            AccountData account = new AccountData()
-            {
-                Name = "administrator",
-                Password = "root"
-            };
+           AccountData account = new AccountData()
+           {
+               Name = "administrator",
+               Password = "secret"
+           };
+
+           ProjectData project = new ProjectData()
+           {
+               Name = "Project" + DateTime.UtcNow.ToString(),
+               Description = "Project Description " + DateTime.UtcNow.ToString()
+           };
+
+            List<ProjectData> projects = new List<ProjectData>();
+            projects = app.API.GetAllProjects(account);
+
             if (app.API.GetAllProjects(account).Count == 0)
             {
-                ProjectData project = new ProjectData()
-                {
-                    Name = GenerateRandomString(15),
-                    Description = GenerateRandomString(100),
-                };
+               
                 app.API.CreateNewProject(account, project);
+                projects = app.API.GetAllProjects(account);
             }
+
             List<ProjectData> oldList = app.API.GetAllProjects(account);
 
             app.projectManagementHelper.Remove(0);
 
-            List<ProjectData> newList = app.API.GetAllProjects(account);
-            ProjectData toBeRemoved = oldList[0];
-            oldList.RemoveAt(0);
-            oldList.Sort();
-            newList.Sort();
-
-            foreach (ProjectData project in newList)
-            {
-                Assert.AreNotEqual(project.Name, toBeRemoved.Name);
-            }
-
-            Assert.AreEqual(oldList.Count, newList.Count);
-            Assert.AreEqual(oldList, newList);
+            List<ProjectData> projectsRemove = app.API.GetAllProjects(account);
+            Assert.AreNotEqual(projectsRemove, projects);
+            Assert.AreEqual((projectsRemove.Count + 1), projects.Count);
         }
     }
 }

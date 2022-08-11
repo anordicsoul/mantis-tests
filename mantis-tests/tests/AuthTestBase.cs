@@ -15,7 +15,7 @@ namespace mantis_tests
             AccountData account = new AccountData()
             {
                 Name = "administrator",
-                Password = "root"
+                Password = "secret"
             };
             app.authHelper.Autenticate(account);
         }

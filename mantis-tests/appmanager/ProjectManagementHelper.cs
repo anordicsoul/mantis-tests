@@ -36,7 +36,7 @@ namespace mantis_tests
 
         private void SubmitRemoveProjectButton()
         {
-            driver.FindElement(By.CssSelector("form#project-delete-form input[type=\"submit\"]")).Click();
+            driver.FindElement(By.Id("project-delete-form")).Click();
         }
 
         private void InitProjectModification(int index)
@@ -44,7 +44,7 @@ namespace mantis_tests
             driver.FindElement(By.XPath($"(//table/tbody)[1]/tr[{index + 1}]/td/a")).Click();
         }
 
-        public List<ProjectData> GetProjectList()
+        public List<ProjectData> GetProjectsList()
         {
             List<ProjectData> projectList = new List<ProjectData>();
 
