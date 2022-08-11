@@ -21,7 +21,7 @@ namespace mantis_tests
                 Name = "administrator",
                 Password = "root"
             };
-            ProjectData project = new ProjectData()
+            ProjectData project = new ProjectData("test")
             {
                 Id = "1"
             };

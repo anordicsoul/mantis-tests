@@ -54,7 +54,7 @@ namespace mantis_tests
 
             foreach (Mantis.ProjectData project in projects)
             {
-                projectList.Add(new ProjectData()
+                projectList.Add(new ProjectData("test")
                 {
                     Name = project.name,
                     Description = project.description,

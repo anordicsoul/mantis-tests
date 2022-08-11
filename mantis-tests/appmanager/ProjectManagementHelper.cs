@@ -29,6 +29,12 @@ namespace mantis_tests
             AcceptRemoveProject();
         }
 
+        public void Remove(AccountData account, ProjectData project)
+        {
+            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
+            client.mc_project_delete(account.Name, account.Password, project.Id);
+        }
+
         private void AcceptRemoveProject()
         {
             driver.FindElement(By.CssSelector("form.center input[type=\"submit\"]")).Click();
@@ -44,21 +50,20 @@ namespace mantis_tests
             driver.FindElement(By.XPath($"(//table/tbody)[1]/tr[{index + 1}]/td/a")).Click();
         }
 
-        public List<ProjectData> GetProjectsList()
+        public List<ProjectData> GetProjectsList(AccountData account)
         {
             List<ProjectData> projectList = new List<ProjectData>();
-
-            ICollection<IWebElement> elements = driver.FindElements(By.XPath("(//table/tbody)[1]/tr"));
-            foreach (IWebElement element in elements)
+            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
+            Mantis.ProjectData[] apiProjects = client.mc_projects_get_user_accessible(account.Name, account.Password);
+            foreach (Mantis.ProjectData project in apiProjects)
             {
-                projectList.Add(new ProjectData()
+                projectList.Add(new ProjectData(project.name)
                 {
-                    Id = Regex.Match(element.FindElement(By.XPath("./td[1]/a")).GetAttribute("href"), "\\d+").Value,
-                    Name = element.FindElement(By.XPath("./td[1]")).Text,
-                    Description = element.FindElement(By.XPath("./td[5]")).Text
+                    Description = project.description,
+                    Id = project.id
                 });
             }
-            return projectList;
+            return new List<ProjectData>(projectList);
         }
         public void InitProjectCreation()
         {

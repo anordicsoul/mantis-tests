@@ -18,9 +18,8 @@ namespace mantis_tests
                 Password = "root"
             };
 
-            ProjectData project = new ProjectData()
+            ProjectData project = new ProjectData("TestProject")
             {
-                Name = "project",
                 Description = GenerateRandomString(100)
             };
 
